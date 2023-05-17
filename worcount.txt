@@ -1,0 +1,45 @@
+import org.apache.spark.SparkContext
+
+
+val sc = new SparkContext()
+var map = sc.textFile("/mnt/spark/bin/new.txt").flatMap(line =>line.split(" ")).map(word=>(word,1));
+
+
+println(map)
+
+
+var counts = map.reduceByKey(_ + _);
+
+
+println("Max",counts.max)
+
+
+var valu=counts.values
+
+
+println("Value =",valu)
+
+
+println("Count =",counts.count)
+
+
+counts.count
+
+
+counts.collect
+
+
+val keysRdd = counts.keys
+
+
+val sorted = keysRdd.sortBy(x => x, true)
+
+
+sorted.collect
+
+
+val m=counts.max
+
+
+counts.saveAsTextFile("/mnt/spark/bin/Word_frl")
+sorted.saveAsTextFile("/mnt/spark/bin/Sort_frl")
